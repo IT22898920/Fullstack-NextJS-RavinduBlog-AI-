@@ -7,7 +7,7 @@
 
 /* styles import */
 @import "../styles/Home.css";
-/* @import "../styles/Loader.css"; */
+@import "../styles/Loader.css";
 
 @layer base {
   :root {
