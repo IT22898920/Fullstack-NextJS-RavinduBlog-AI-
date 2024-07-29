@@ -26,27 +26,39 @@ import Link from "next/link";
 import { Separator } from "../ui/separator";
 import GoogleBtn from "./GoogleBtn";
 import GithubBtn from "./GithubBtn";
+import { FaRegUser } from "react-icons/fa";
 
-const FormSchema = z.object({
-  email: z.string().min(6, {
-    message: "Email must be at least 6 characters.",
-  }),
-  password: z.string().min(6, {
-    message: "password must be at least 6 characters.",
-  }),
-});
+const FormSchema = z
+  .object({
+    name: z.string().min(3, {
+      message: "Name must be at least 3 characters.",
+    }),
+    email: z.string().email().min(6, {
+      message: "Email must be at least 6 characters.",
+    }),
+    password: z.string().min(6, {
+      message: "password must be at least 6 characters.",
+    }),
+    cpassword: z.string(),
+  })
+  .refine((data) => data.password === data.cpassword, {
+    message: "Passwords must match",
+    path: ["cpassword"],
+  });
 
-export default function LoginForm() {
+export default function RegisterForm() {
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
+      cpassword: "",
     },
   });
 
   function onSubmit(values) {
-    const { email, password } = values;
+    const { name, email, password } = values;
     console.log(values);
   }
 
@@ -54,7 +66,9 @@ export default function LoginForm() {
     <div className="grid place-items-center h-screen">
       <Card className="w-[450px] shadow-lg border-t-4 border-blue-500">
         <CardHeader>
-          <CardTitle className="text-center">Login</CardTitle>
+          <CardTitle className="text-center text-color-secondary">
+            Register
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="mb-4 flex flex-col items-center space-y-2">
@@ -70,6 +84,26 @@ export default function LoginForm() {
               onSubmit={form.handleSubmit(onSubmit)}
               className="border border-white rounded-md p-1 space-y-2"
             >
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem className="relative">
+                    <FormLabel className="absolute left-2 top-2.5">
+                      <FaRegUser size={20} color="#333" />
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        className="pl-8 w-full"
+                        placeholder="Name"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="email"
@@ -109,21 +143,36 @@ export default function LoginForm() {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="cpassword"
+                render={({ field }) => (
+                  <FormItem className="relative">
+                    <FormLabel className="absolute left-2 top-2.5">
+                      <MdPassword size={20} color="#333" />
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        className="pl-8 w-full"
+                        placeholder="Confirm Password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <Button className="w-full mt-2" type="submit">
-                Login
+                Register
               </Button>
             </form>
           </Form>
         </CardContent>
         <CardFooter className="flex flex-col">
-          <div className="w-full flex items-center justify-between ">
-            <p className="text-left">
-              <Link className="text-sm" href={"/forgot"}>
-                Forgot Password
-              </Link>
-            </p>
+          <div className="w-full flex-center ">
             <p className="text-sm">
-              New User? <Link href={"/register"}>Register</Link>
+              Already have an account? <Link href={"/login"}>Login</Link>
             </p>
           </div>
           <Separator className="h-[0.5px] my-2" />
