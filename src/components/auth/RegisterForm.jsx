@@ -27,6 +27,11 @@ import { Separator } from "../ui/separator";
 import GoogleBtn from "./GoogleBtn";
 import GithubBtn from "./GithubBtn";
 import { FaRegUser } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { registerUser } from "actions/userActions";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { LoadingButton } from "../widgets/Loader";
 
 const FormSchema = z
   .object({
@@ -47,6 +52,8 @@ const FormSchema = z
   });
 
 export default function RegisterForm() {
+  const router = useRouter();
+
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -57,9 +64,28 @@ export default function RegisterForm() {
     },
   });
 
-  function onSubmit(values) {
+  const { isSubmitting } = form.formState;
+
+  async function onSubmit(values) {
     const { name, email, password } = values;
     console.log(values);
+    const formData = {
+      name,
+      email,
+      password,
+    };
+    const res = await registerUser(formData);
+
+    if (res?.error) {
+      // console.log(res.error);
+      return toast.error(res.error);
+    }
+    if (res?.message) {
+      // console.log(res.message);
+      toast.error(res.message);
+      router.push("/login");
+    }
+    form.reset();
   }
 
   return (
@@ -71,13 +97,13 @@ export default function RegisterForm() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="mb-4 flex flex-col items-center space-y-2">
+          {/* <div className="mb-4 flex flex-col items-center space-y-2">
             <GoogleBtn />
             <GithubBtn />
           </div>
           <p className="text-sm text-center mb-2">
             Or Login with email & password
-          </p>
+          </p> */}
 
           <Form {...form}>
             <form
@@ -163,9 +189,18 @@ export default function RegisterForm() {
                   </FormItem>
                 )}
               />
-              <Button className="w-full mt-2" type="submit">
-                Register
-              </Button>
+
+              {isSubmitting ? (
+                <LoadingButton
+                  btnText="Submitting..."
+                  btnClass="w-full"
+                  btnVariant="outline"
+                />
+              ) : (
+                <Button className="w-full mt-2" type="submit">
+                  Register
+                </Button>
+              )}
             </form>
           </Form>
         </CardContent>

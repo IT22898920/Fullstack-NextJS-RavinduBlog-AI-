@@ -18,6 +18,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { CiLogin, CiLogout } from "react-icons/ci";
 import { Button } from "../ui/button";
 import { LuUser2, LuUserPlus2 } from "react-icons/lu";
+import { signOut } from "next-auth/react";
 
 
 
@@ -130,7 +131,7 @@ const MainHeader = () => {
                             <Button
                               variant={"destructive"}
                               className="w-full"
-                              // onClick={() => signOut()}
+                              onClick={() => signOut({ callbackUrl: "/login"})}
                             >
                               Logout
                             </Button>

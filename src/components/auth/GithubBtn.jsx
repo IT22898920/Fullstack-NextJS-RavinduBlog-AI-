@@ -1,15 +1,14 @@
-"use client";
-
+import React from "react";
 import Image from "next/image";
-// import { signIn } from "next-auth/react";
 import { Button } from "../ui/button";
+import { signIn } from "next-auth/react";
 
 const GithubBtn = () => {
   return (
     <Button
       variant={"outline"}
       className="w-full space-x-2"
-      // onClick={() => signIn("github")}
+      onClick={() => signIn("github")}
     >
       <span>Sign In With GitHub</span>
       <Image

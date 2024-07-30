@@ -19,6 +19,7 @@ import {
 } from "../ui/sheet";
 import HeaderSearch from './HeaderSearch';
 import { IoMdClose } from 'react-icons/io';
+import { signOut } from 'next-auth/react';
 const MainHeaderMobile = () => {
 
   const [showSearch, setShowSearch] = useState(false);
@@ -40,9 +41,7 @@ const MainHeaderMobile = () => {
               side={"left"}
               className="w-[300px] bg-color-dark-blue p-3"
             >
-              <SheetHeader className="relative">
-                {logo}
-              </SheetHeader>
+              <SheetHeader className="relative">{logo}</SheetHeader>
               <Separator className="bg-zinc-300 mt-2" />
 
               <div className="grid gap-4 py-4">
@@ -56,7 +55,7 @@ const MainHeaderMobile = () => {
                   type="button"
                   variant={"destructive"}
                   className="w-full"
-                  // onClick={logoutUser}
+                  onClick={() => signOut({ callbackUrl: "/login" })}
                 >
                   Logout
                 </Button>
@@ -108,7 +107,7 @@ const MainHeaderMobile = () => {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default MainHeaderMobile

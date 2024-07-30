@@ -26,6 +26,10 @@ import Link from "next/link";
 import { Separator } from "../ui/separator";
 import GoogleBtn from "./GoogleBtn";
 import GithubBtn from "./GithubBtn";
+import { toast } from "react-toastify";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { LoadingButton } from "../widgets/Loader";
 
 const FormSchema = z.object({
   email: z.string().min(6, {
@@ -37,6 +41,8 @@ const FormSchema = z.object({
 });
 
 export default function LoginForm() {
+  const router = useRouter();
+
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -45,9 +51,28 @@ export default function LoginForm() {
     },
   });
 
-  function onSubmit(values) {
+  const { isSubmitting } = form.formState;
+
+  async function onSubmit(values) {
     const { email, password } = values;
-    console.log(values);
+    try {
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (res?.error) {
+        toast.error("Invalid email or password");
+        return;
+      }
+      console.log(res);
+      toast.success("Login Successful");
+      router.replace("/");
+    } catch (error) {
+      console.error("Login Error:", error);
+      toast.error("An unexpected error occurred");
+    }
   }
 
   return (
@@ -109,9 +134,17 @@ export default function LoginForm() {
                   </FormItem>
                 )}
               />
-              <Button className="w-full mt-2" type="submit">
-                Login
-              </Button>
+              {isSubmitting ? (
+                <LoadingButton
+                  btnText="Submitting..."
+                  btnClass="w-full"
+                  btnVariant="outline"
+                />
+              ) : (
+                <Button className="w-full mt-2" type="submit">
+                  Login
+                </Button>
+              )}
             </form>
           </Form>
         </CardContent>

@@ -3,6 +3,9 @@ import "./globals.css";
 import Header from "@/components/header/Header";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Footer from "components/footer/Footer";
+import { ToastContainer, toast } from "react-toastify";
+import { AuthProvider } from "./AuthProvider";
+import "react-toastify/dist/ReactToastify.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,10 +23,13 @@ export default function RootLayout({ children }) {
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
-          >        
-          <Header/>
-          {children}
-          <Footer />
+          >
+          <ToastContainer />
+          <AuthProvider>
+            <Header/>
+            {children}
+            <Footer />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
