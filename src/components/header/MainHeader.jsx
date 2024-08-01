@@ -19,6 +19,8 @@ import { CiLogin, CiLogout } from "react-icons/ci";
 import { Button } from "../ui/button";
 import { LuUser2, LuUserPlus2 } from "react-icons/lu";
 import { signOut } from "next-auth/react";
+import { ShowOnLogin, ShowOnLogout } from "../protect/protect";
+import { UserAvatar } from "../profile/Profile";
 
 
 
@@ -75,19 +77,19 @@ const MainHeader = () => {
                           href=""
                           className="flex-center space-x-1 outline-none dark:text-yellow-300"
                         >
-                          {/* <ShowOnLogout> */}
+                          <ShowOnLogout>
                           <FaRegUser />
                             <span>Account</span>
-                          {/* </ShowOnLogout> */}
-                          {/* <ShowOnLogin>
+                          </ShowOnLogout>
+                          <ShowOnLogin>
                             <UserAvatar />
-                          </ShowOnLogin> */}
+                          </ShowOnLogin>
                           <MdKeyboardArrowDown size={20} />
                         </Link>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className="w-52 p-0 m-0">
                         <DropdownMenuSeparator />
-                        {/* <ShowOnLogout> */}
+                        <ShowOnLogout>
                           <DropdownMenuItem>
                             <Button variant={"destructive"} className="w-full">
                               <Link
@@ -101,7 +103,7 @@ const MainHeader = () => {
                               </Link>
                             </Button>
                           </DropdownMenuItem>
-                        {/* </ShowOnLogout> */}
+                        </ShowOnLogout>
 
                         <DropdownMenuItem>
                           <Link href={"/profile"} className="dark:text-yellow-300">
@@ -126,7 +128,7 @@ const MainHeader = () => {
                           </DropdownMenuItem>
                         {/* </AdminOnlyLink> */}
 
-                        {/* <ShowOnLogin> */}
+                        <ShowOnLogin>
                           <DropdownMenuItem>
                             <Button
                               variant={"destructive"}
@@ -136,7 +138,7 @@ const MainHeader = () => {
                               Logout
                             </Button>
                           </DropdownMenuItem>
-                        {/* </ShowOnLogin> */}
+                        </ShowOnLogin>
                       </DropdownMenuContent>
                     </DropdownMenu>
                 </li>
