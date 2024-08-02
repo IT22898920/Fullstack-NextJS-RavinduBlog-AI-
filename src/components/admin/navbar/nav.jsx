@@ -82,6 +82,7 @@ export function Nav({ links, isCollapsed }) {
               </Link>
             )
           )}
+          
         </nav>
       </div>
     </TooltipProvider>
