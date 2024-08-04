@@ -1,6 +1,6 @@
-import React from 'react'
-import MainHeader from './MainHeader'
-import MainHeaderMobile from './MainHeaderMobile'
+import React from "react";
+import MainHeader from "./MainHeader";
+import MainHeaderMobile from "./MainHeaderMobile";
 
 const Header = () => {
   return (
@@ -9,10 +9,10 @@ const Header = () => {
         <MainHeader />
       </div>
       <div className="show-on-mobile">
-      <MainHeaderMobile />
+        <MainHeaderMobile />
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
