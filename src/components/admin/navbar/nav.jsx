@@ -6,7 +6,7 @@ import { buttonVariants } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
-  TooltipTrigger
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { usePathname } from "next/navigation";
@@ -29,7 +29,7 @@ export function Nav({ links, isCollapsed }) {
                     className={cn(
                       buttonVariants({
                         variant: link.href === pathName ? "default" : "ghost",
-                        size: "icon"
+                        size: "icon",
                       }),
                       "h-9 w-9",
                       link.variant === "default" &&
@@ -59,7 +59,7 @@ export function Nav({ links, isCollapsed }) {
                 className={cn(
                   buttonVariants({
                     variant: link.href === pathName ? "default" : "ghost",
-                    size: "sm"
+                    size: "sm",
                   }),
                   link.variant === "default" &&
                     " dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",

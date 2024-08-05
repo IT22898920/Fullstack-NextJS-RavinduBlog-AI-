@@ -4,7 +4,6 @@ import { Separator } from "components/ui/separator";
 import React from "react";
 
 export default function page() {
-    
   return (
     <section>
       <div className="container">

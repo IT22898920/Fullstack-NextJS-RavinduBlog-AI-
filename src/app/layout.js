@@ -19,14 +19,14 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <ToastContainer />
           <AuthProvider>
-            <Header/>
+            <Header />
             {children}
             <Footer />
           </AuthProvider>
