@@ -6,6 +6,7 @@ import Footer from "components/footer/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import { AuthProvider } from "./AuthProvider";
 import "react-toastify/dist/ReactToastify.css";
+import ProgressBarProvider from "./ProgressBarProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,12 +25,14 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
+          <ProgressBarProvider>
           <ToastContainer />
           <AuthProvider>
             <Header />
             {children}
             <Footer />
           </AuthProvider>
+          </ProgressBarProvider>
         </ThemeProvider>
       </body>
     </html>
