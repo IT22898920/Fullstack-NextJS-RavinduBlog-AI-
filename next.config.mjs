@@ -30,6 +30,7 @@ const nextConfig = {
       },
     ],
   },
+  productionBrowserSourceMaps: false, // Add this line to disable source maps in production
 };
 
 export default nextConfig;
