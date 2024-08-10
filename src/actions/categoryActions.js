@@ -37,3 +37,30 @@ export const createCat = async (formData) => {
     };
   }
 };
+
+export const getCategories = async () => {
+  try {
+    await connectMongoDB();
+    const categories = await Category.find().sort({ createdAt: -1 });
+    return JSON.stringify(categories);
+  } catch (error) {
+    return {
+      error: getErrorMessage(error),
+    };
+  }
+};
+
+export const deleteCategory = async (id) => {
+  try {
+    await connectMongoDB();
+    const category = await Category.findByIdAndDelete(id);
+    revalidatePath("/admin/category");
+    return {
+      message: "Category deleted successfully",
+    };
+  } catch (error) {
+    return {
+      error: getErrorMessage(error),
+    };
+  }
+};
