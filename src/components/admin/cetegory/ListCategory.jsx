@@ -11,6 +11,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { AiOutlineEye } from "react-icons/ai";
+import DeleteModal from "components/widgets/DeleteModal";
+import { toast } from "react-toastify";
+import { deleteCategory } from "actions/categoryActions";
 
 const invoices = [
   {
@@ -58,6 +61,17 @@ const invoices = [
 ];
 
 export default function ListCategory({ categories }) {
+
+    const onDeleteCat = async (id) => {
+      console.log(id);
+      const res = await deleteCategory(id);
+      if (res?.error) {
+        toast.error(res.error);
+      } else if (res?.message) {
+        toast.success(res.message);
+      }
+    };
+
   return (
     <div>
       <Table>
@@ -86,7 +100,7 @@ export default function ListCategory({ categories }) {
                     }
                   />
                 </span>
-                {/* <span>
+                <span>
                   <DeleteModal
                     title="Delete Category"
                     desc="Warning: This action cannot be undone. This will
@@ -95,7 +109,7 @@ export default function ListCategory({ categories }) {
                     pass={"delete"}
                     onClick={() => onDeleteCat(cat._id)}
                   />
-                </span> */}
+                </span>
               </TableCell>
             </TableRow>
           ))}

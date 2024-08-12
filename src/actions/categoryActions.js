@@ -3,6 +3,7 @@ import { connectMongoDB } from "@/lib/mongodb";
 import Category from "@/models/categoryModel";
 import slugify from "slugify";
 import { getErrorMessage } from "./userActions";
+import { revalidatePath } from "next/cache";
 
 export const createCat = async (formData) => {
   const { name } = formData;
@@ -64,3 +65,6 @@ export const deleteCategory = async (id) => {
     };
   }
 };
+
+
+
