@@ -1,6 +1,6 @@
 "use client";
 import ActionModal from "components/widgets/ActionModal";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LoadingButton } from "components/widgets/Loader";
 import { Button } from "components/ui/button";
 import * as z from "zod";
@@ -16,7 +16,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "components/ui/input";
 import { toast } from "react-toastify";
-import { createCat } from "actions/categoryActions";
+import { createCat, updateCategory } from "actions/categoryActions";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const FormSchema = z.object({
   name: z.string().min(3, {
@@ -26,7 +27,13 @@ const FormSchema = z.object({
 
 export default function CreateCategory() {
   const [open, setOpen] = useState(false);
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
+    const id = searchParams.get("id");
+  const itemName = searchParams.get("itemName");
+
+  
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -35,20 +42,50 @@ export default function CreateCategory() {
   });
   const isLoading = form.formState.isSubmitting;
 
+
   async function onSubmit(values) {
-    console.log(values);
     const { name } = values;
-    const res = await createCat(values);
-    console.log(res);
-    if (res?.error) {
-      toast.error(res?.error); // Display error message if there's an error
+    const formData = {
+      name,
+      id: id ? id : "",
+    };
+    console.log(formData);
+    if (itemName && id) {
+      const res = await updateCategory(formData);
+      if (res?.error) {
+        toast.error(res?.error);
+      }
+      if (res?.message) {
+        toast.success(res?.message);
+      }
+      form.reset();
+      setOpen(false);
+    } else {
+      // @ts-ignore
+      const res = await createCat(formData);
+      if (res?.error) {
+        toast.error(res?.error);
+      }
+      if (res?.message) {
+        toast.success(res?.message);
+      }
+      form.reset();
+      setOpen(false);
     }
-    if (res?.message) {
-      toast.success(res?.message); // Display success message if category creation is successful
-    }
-    form.reset();
-    setOpen(false);
   }
+
+    useEffect(() => {
+      if (id) {
+        setOpen(true);
+        form.setValue("name", itemName);
+      }
+    }, [id, form, itemName]);
+
+      useEffect(() => {
+        if (!open) {
+          router.replace("/admin/category");
+        }
+      }, [open, router]);
 
   return (
     <div>
@@ -89,7 +126,7 @@ export default function CreateCategory() {
               />
             ) : (
               <Button type="submit" className="w-full">
-                Create Category
+                {itemName && id ? "Update Category" : "Create Category"}
               </Button>
             )}
           </form>

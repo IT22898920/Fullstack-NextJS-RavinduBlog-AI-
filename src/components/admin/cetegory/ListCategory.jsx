@@ -14,6 +14,7 @@ import { AiOutlineEye } from "react-icons/ai";
 import DeleteModal from "components/widgets/DeleteModal";
 import { toast } from "react-toastify";
 import { deleteCategory } from "actions/categoryActions";
+import { useRouter } from "next/navigation";
 
 const invoices = [
   {
@@ -61,6 +62,7 @@ const invoices = [
 ];
 
 export default function ListCategory({ categories }) {
+  const router = useRouter();
 
     const onDeleteCat = async (id) => {
       console.log(id);

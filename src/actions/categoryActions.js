@@ -67,4 +67,22 @@ export const deleteCategory = async (id) => {
 };
 
 
-
+export const updateCategory = async (formData) => {
+  const { name, id } = formData;
+  try {
+    await connectMongoDB();
+    // Check if category has been used
+    const category = await Category.findByIdAndUpdate(id, {
+      name,
+      slug: slugify(name),
+    });
+    revalidatePath("/admin/category");
+    return {
+      message: "Category updated successfully",
+    };
+  } catch (error) {
+    return {
+      error: getErrorMessage(error),
+    };
+  }
+};
