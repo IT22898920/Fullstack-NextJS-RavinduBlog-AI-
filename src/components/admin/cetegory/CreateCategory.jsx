@@ -26,6 +26,7 @@ const FormSchema = z.object({
 });
 
 export default function CreateCategory() {
+  const [imageLink, setImageLink] = useState("");
   const [open, setOpen] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
