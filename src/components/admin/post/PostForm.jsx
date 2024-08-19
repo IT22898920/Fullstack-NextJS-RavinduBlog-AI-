@@ -223,17 +223,6 @@ async function onSubmit(values) {
     form.setValue("content", content);
   };
 
-  // useEffect(() => {
-  //   if (session && session?.user) {
-  //     getUserData();
-  //   }
-  //   async function getUserData() {
-  //     const res = await getUser(session?.user?.email);
-  //     const user = JSON.parse(res);
-  //     await form.setValue("author", user?._id);
-  //   }
-  // }, [session, form]);
-
   const [showAI, setShowAI] = useState(false);
 
   return (
@@ -255,6 +244,9 @@ async function onSubmit(values) {
         )}
       ></div>
       {/* SUPABLOG AI */}
+      {/* <Chat /> */}
+      {/* <Chat /> */}
+      {/* <Chat /> */}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
