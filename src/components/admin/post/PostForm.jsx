@@ -244,9 +244,7 @@ async function onSubmit(values) {
         )}
       ></div>
       {/* SUPABLOG AI */}
-      {/* <Chat /> */}
-      {/* <Chat /> */}
-      {/* <Chat /> */}
+
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
