@@ -54,3 +54,54 @@ export const createPost = async (formData) => {
     };
   }
 };
+
+export const getPosts = async (params) => {
+  const page = parseInt(params.page) || 1;
+  const limit = parseInt(params.limit) || 10;
+  let sortDirection = params.order === "asc" ? 1 : -1;
+  const skip = (page - 1) * limit;
+  console.log(params);
+
+  const query = {
+    // "status": "Published",
+    ...(params.search && {
+      $or: [
+        { title: { $regex: params.search, $options: "i" } },
+        { category: { $regex: params.search, $options: "i" } },
+      ],
+    }),
+    ...(params.status && { status: params.status }),
+    ...(params.category && { category: params.category }),
+    ...(params.isFeatured !== undefined && { isFeatured: params.isFeatured }),
+  };
+
+  try {
+    await connectMongoDB();
+    const posts = await Post.find(query)
+      .populate("author", "name email image")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const total = await Post.countDocuments(query);
+    const pageCount = Math.ceil(total / limit);
+
+    const response = {
+      total,
+      pageCount,
+      data: posts,
+    };
+
+    // return response;
+
+    return JSON.stringify({
+      total,
+      pageCount,
+      data: posts,
+    });
+  } catch (error) {
+    return {
+      error: getErrorMessage(error),
+    };
+  }
+};
