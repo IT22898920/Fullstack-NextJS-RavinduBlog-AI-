@@ -10,9 +10,43 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import Search from "components/widgets/Search";
+import { cn } from "lib/utils";
 
+const invoices = [
+  {
+    invoice: "INV001",
+    paymentStatus: "Paid",
+    totalAmount: "$250.00",
+    paymentMethod: "Credit Card",
+  },
+  {
+    invoice: "INV002",
+    paymentStatus: "Pending",
+    totalAmount: "$150.00",
+    paymentMethod: "PayPal",
+  },
+  {
+    invoice: "INV003",
+    paymentStatus: "Unpaid",
+    totalAmount: "$350.00",
+    paymentMethod: "Bank Transfer",
+  }
+
+];
 export default function ListPost({ total, pageNumber, posts }) {
   const [action, setAction] = useState("");
+  const [search, setSearch] = useState("");
 
   const applyAction = async () => {
     console.log(action);
@@ -84,7 +118,57 @@ export default function ListPost({ total, pageNumber, posts }) {
           </div>
           <p className="text-color-dark font-semibold">{total} Posts</p>
         </div>
+        <Search
+          placeholder="Search date, amount, status..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
+      <Table>
+        <TableHeader>
+          <TableRow className="border-b-[1px] border-color-text">
+            <TableHead className="w-[100px]">
+              <input
+                type="checkbox"
+                className="form-checkbox text-purple-600 h-4 w-4 mr-2"
+                //checked={selectedItems.length === posts?.length}
+                // onChange={() => handleSelectAll()}
+              />
+              sn
+            </TableHead>
+            <TableHead>Title</TableHead>
+            <TableHead>Category</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Author</TableHead>
+            <TableHead>Action</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody className="text-color-text">
+          {posts?.map((post, index) => (
+            <TableRow
+              key={index}
+              className={cn("border-b-[1px] border-gray-400")}
+            >
+              <TableCell className="font-medium">
+                <input
+                  type="checkbox"
+                  className="form-checkbox text-purple-600 h-4 w-4 mr-2"
+                  // checked={isSelected(post._id)}
+                  // onChange={() => handleCheckboxChange(post._id)}
+                />
+                {/* {index + 1 + (currentPage?.current - 1) * Number(5)} */}
+              </TableCell>
+              <TableCell className={post?.isFeatured && "bg-blue-400"}>
+                {/* {shortenText(post?.title, 30)} */}
+              </TableCell>
+              <TableCell>{post?.category}</TableCell>
+              <TableCell>{post?.status}</TableCell>
+              <TableCell>{post?.author?.name}</TableCell>
+              <TableCell>{post?.status}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 }
